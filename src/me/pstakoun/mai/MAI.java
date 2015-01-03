@@ -13,7 +13,7 @@ import org.reflections.Reflections;
 
 public class MAI
 {
-	private static ArrayList<Object> modules = new ArrayList<Object>();
+	private static ArrayList<Module> modules = new ArrayList<Module>();
 	private static Reflections reflections = new Reflections("me.pstakoun.mai");
 	public static PrintWriter logger;
 	
@@ -24,18 +24,19 @@ public class MAI
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
-		if (args.length > 1) {
-			try {
-				Set<Class<? extends MAI>> mods = reflections.getSubTypesOf(me.pstakoun.mai.MAI.class);
-				Iterator<Class<? extends MAI>> iterator = mods.iterator();
-				while (iterator.hasNext()) {
-					Object mod = iterator.next();
-					String cls = mod.getClass().getName();
-					Class.forName(cls).newInstance();
+		try {
+			Set<Class<? extends MAI>> mods = reflections.getSubTypesOf(MAI.class);
+			Iterator<Class<? extends MAI>> iterator = mods.iterator();
+			while (iterator.hasNext()) {
+				Class<? extends MAI> mod = iterator.next();
+				String cls = mod.getName();
+				Object instance = Class.forName(cls).newInstance();
+				if (!modules.contains((Module)instance)) {
+					modules.add((Module)instance);
 				}
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
 			}
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 		showModules();
 	}
@@ -62,15 +63,10 @@ public class MAI
 	private static void showModules()
 	{
 		String mods = "Installed modules:";
-		for (Object mod : modules) {
-			mods += ("\n" + ((Module) mod).getName());
+		for (Module mod : modules) {
+			mods += ("\n" + mod.getName());
 		}
 		System.out.println(mods);
-	}
-	
-	public static void registerModule(Object mod)
-	{
-		modules.add(mod);
 	}
 	
 }

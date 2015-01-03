@@ -9,8 +9,7 @@ public class ChatAI extends MAI implements Module
 	
 	public ChatAI()
 	{
-		registerModule(this);
-		System.out.println("Hello, World!");
+		
 	}
 
 	@Override
