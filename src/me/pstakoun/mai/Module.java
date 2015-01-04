@@ -12,11 +12,10 @@ public interface Module
 	/* Creates now instance of MAI. */
 	MAI ai = new MAI();
 	
-	/* Reads user input. */
-	String in = ai.getInput();
-	
 	/* Writes to log file. */
 	PrintWriter logger = MAI.logger;
+	
+	Module activeModule = ai.getActiveModule();
 	
 	/**
 	 * Called when module activated.

@@ -249,4 +249,13 @@ public class MAI
 		return null;
 	}
 	
+	/**
+	 * Returns the currently active module.
+	 * @return The currently active module.
+	 */
+	public Module getActiveModule()
+	{
+		return activeModule;
+	}
+	
 }

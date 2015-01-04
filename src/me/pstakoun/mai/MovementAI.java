@@ -24,7 +24,9 @@ public class MovementAI implements Module
 	 * Returns name of module.
 	 */
 	@Override
-	public String getName() {
+	public String getName()
+	{
+		/* Returns module name. */
 		return "MovementAI";
 	}
 	
