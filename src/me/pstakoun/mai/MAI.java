@@ -75,27 +75,27 @@ public class MAI
 	{
 		/* Sets up date for log file name. */
 		Calendar cal = Calendar.getInstance();
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-");
-    	String date = sdf.format(cal.getTime());
-    	
-    	/* Declares variables for file creation. */
-    	File dir = new File("logs");
-    	dir.mkdir();
-    	String logName;
-    	File log;
-    	
-    	/* Looks for first available file name and creates log file. */
-    	int i = 1;
-    	while (true) {
-    		logName = (date + i + ".txt");
-    		log = new File(dir, logName);
-    		if (!log.exists()) {
-    			log.createNewFile();
-    			break;
-    		}
-    		i++;
-    	}
-    	/* Creates logger for given file. */
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-");
+		String date = sdf.format(cal.getTime());
+		
+		/* Declares variables for file creation. */
+		File dir = new File("logs");
+		dir.mkdir();
+		String logName;
+		File log;
+		
+		/* Looks for first available file name and creates log file. */
+		int i = 1;
+		while (true) {
+			logName = (date + i + ".txt");
+			log = new File(dir, logName);
+			if (!log.exists()) {
+				log.createNewFile();
+				break;
+			}
+			i++;
+		}
+		/* Creates logger for given file. */
 		logger = new PrintWriter(log.getAbsoluteFile());
 	}
 	
