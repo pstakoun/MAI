@@ -1,6 +1,5 @@
 package me.pstakoun.mai;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
@@ -15,9 +14,6 @@ public interface Module
 	
 	/* Reads user input. */
 	String in = ai.getInput();
-	
-	/* Writes to console. */
-	PrintStream out = System.out;
 	
 	/* Writes to log file. */
 	PrintWriter logger = MAI.logger;

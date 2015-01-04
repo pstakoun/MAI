@@ -34,14 +34,14 @@ public class ChatAI implements Module
 	public void onActivate()
 	{
 		String greeting = greetings[random(0, greetings.length-1)];
-		out.println(greeting);
+		System.out.println(greeting);
 	}
 
 	@Override
 	public void onDeactivate()
 	{
 		String goodbye = goodbyes[random(0, greetings.length-1)];
-		out.println(goodbye);
+		System.out.println(goodbye);
 	}
 	
 	private int random(int min, int max)
