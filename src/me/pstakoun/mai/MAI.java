@@ -1,7 +1,12 @@
 package me.pstakoun.mai;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
@@ -21,16 +26,33 @@ public class MAI
 {
 	/* Contains all modules located by MAI. */
 	private static ArrayList<Module> modules = new ArrayList<Module>();
+	/* Declares variable to store currently active module. */
+	private static Module activeModule;
 	/* Creates instance of Reflections and is used to located modules. */
-	private static Reflections reflections = new Reflections("me.pstakoun.mai");
+	private Reflections reflections = new Reflections("me.pstakoun.mai");
+	/* Reads user input. */
+	private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+	/* Writes to console. */
+	private PrintStream out = System.out;
 	/* Declares logger used to log events. */
 	public static PrintWriter logger;
 	
 	/**
 	 * Called when application executes.
-	 * Locates, sets up, and stores modules.
+	 * Creates instance of MAI.
 	 */
 	public static void main(String[] args)
+	{
+		/* Creates new instance of MAI. */
+		MAI ai = new MAI(args);
+	}
+	
+	/**
+	 * Main constructor for MAI.
+	 * Locates, sets up, and stores modules.
+	 * @param args 
+	 */
+	public MAI(String[] args)
 	{
 		/* Turns off Reflections logging. */
 		Reflections.log = null;
@@ -62,8 +84,35 @@ public class MAI
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		/* Display installed modules. */
-		showModules();
+		if (args.length > 1) {
+			for (Module mod : modules) {
+				if (args[1].equalsIgnoreCase(mod.getName())) {
+					activeModule = mod;
+					activeModule.onActivate();
+					break;
+				}
+			}
+			if (activeModule == null) {
+				/* Display installed modules. */
+				showModules();
+			}
+		} else {
+			/* Display installed modules. */
+			showModules();
+			/* Get module to activate. */
+			while (activeModule == null) {
+				getInput();
+			}
+		}
+	}
+	
+	/**
+	 * Secondary constructor for MAI.
+	 * Set up for module use.
+	 */
+	public MAI()
+	{
+		
 	}
 	
 	/**
@@ -71,7 +120,7 @@ public class MAI
 	 * and sets up the logger.
 	 * @throws IOException
 	 */
-	private static void createLog() throws IOException
+	private void createLog() throws IOException
 	{
 		/* Sets up date for log file name. */
 		Calendar cal = Calendar.getInstance();
@@ -102,7 +151,7 @@ public class MAI
 	/**
 	 * Prints list of installed modules.
 	 */
-	private static void showModules()
+	private void showModules()
 	{
 		String mods = "Installed modules:";
 		/* Adds modules to list. */
@@ -111,6 +160,93 @@ public class MAI
 		}
 		/* Prints out completed list. */
 		System.out.println(mods);
+	}
+	
+	/**
+	 * Checks whether or not user input is a command.
+	 * @param input
+	 * @return Whether or not input is a command.
+	 */
+	private boolean handleInput(String input)
+	{
+		/* If input if a command, send it to be executed. */
+		if (isCommand(input)) {
+			executeCommand(input);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if input is a command.
+	 * @param input
+	 * @return Whether or not input is a command.
+	 */
+	private boolean isCommand(String input)
+	{
+		if (input.startsWith("./")) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Executes given command.
+	 * If command invalid, show help dialog.
+	 * @param cmd
+	 */
+	private void executeCommand(String cmd)
+	{
+		String cmdArgs[] = cmd.split("\\s+");
+		if (cmdArgs[0].equalsIgnoreCase("./help") || cmdArgs[0].equalsIgnoreCase("./?")) {
+			displayCommandHelp();
+		} else if (cmdArgs[0].equalsIgnoreCase("./module")) {
+			if (cmdArgs.length > 1) {
+				for (Module mod : modules) {
+					if (cmdArgs[1].equalsIgnoreCase(mod.getName()) && activeModule != mod) {
+						if (activeModule != null) {
+							activeModule.onDeactivate();
+						}
+						activeModule = mod;
+						activeModule.onActivate();
+					}
+				}
+			} else {
+				out.println("Usage: ./module <moduleName>");
+			}
+		} else {
+			out.println("Invalid command!");
+			displayCommandHelp();
+		}
+	}
+	
+	/**
+	 * Displays help dialog.
+	 */
+	private void displayCommandHelp()
+	{
+		String help = "";
+		out.println(help);
+	}
+
+	/**
+	 * Gets user input and sends it to be handled.
+	 * If input is not a command, sends it to module.
+	 * @return User input.
+	 */
+	public String getInput()
+	{
+		String input = null;
+		try {
+			input = in.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (!handleInput(input)) {
+			return input;
+		}
+		return null;
 	}
 	
 }

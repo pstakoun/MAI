@@ -8,14 +8,18 @@ package me.pstakoun.mai;
  */
 public class MovementAI implements Module
 {
-	/**
-	 * Sole constructor for MovementAI.
-	 */
-	public MovementAI()
+	@Override
+	public void onActivate()
 	{
 		
 	}
 	
+	@Override
+	public void onDeactivate()
+	{
+		
+	}
+
 	/**
 	 * Returns name of module.
 	 */
@@ -23,5 +27,5 @@ public class MovementAI implements Module
 	public String getName() {
 		return "MovementAI";
 	}
-
+	
 }

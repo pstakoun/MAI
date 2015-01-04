@@ -1,7 +1,7 @@
 package me.pstakoun.mai;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * All modules must implement this interface in order to be recognized.
@@ -10,19 +10,31 @@ import java.io.InputStreamReader;
  */
 public interface Module
 {
-	/**
-	 * Reads user input.
-	 */
-	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+	/* Creates now instance of MAI. */
+	MAI ai = new MAI();
+	
+	/* Reads user input. */
+	String in = ai.getInput();
+	
+	/* Writes to console. */
+	PrintStream out = System.out;
+	
+	/* Writes to log file. */
+	PrintWriter logger = MAI.logger;
 	
 	/**
-	 * The currently active module.
+	 * Called when module activated.
 	 */
-	public Module activeModule = null;
+	void onActivate();
+	
+	/**
+	 * Called when module deactivated.
+	 */
+	void onDeactivate();
 	
 	/**
 	 * @return The name of the module.
 	 */
-	public String getName();
+	String getName();
 	
 }
