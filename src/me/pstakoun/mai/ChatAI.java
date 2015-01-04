@@ -40,7 +40,8 @@ public class ChatAI implements Module
 	@Override
 	public void onDeactivate()
 	{
-		
+		String goodbye = goodbyes[random(0, greetings.length-1)];
+		out.println(goodbye);
 	}
 	
 	private int random(int min, int max)
