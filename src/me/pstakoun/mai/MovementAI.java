@@ -1,6 +1,6 @@
 package me.pstakoun.mai;
 
-public class MovementAI extends MAI implements Module
+public class MovementAI implements Module
 {
 	public MovementAI()
 	{
