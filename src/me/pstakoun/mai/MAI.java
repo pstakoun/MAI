@@ -101,7 +101,7 @@ public class MAI
 			showModules();
 			/* Get module to activate. */
 			while (activeModule == null) {
-				getInput();
+				GetInput();
 			}
 		}
 	}
@@ -235,7 +235,7 @@ public class MAI
 	 * If input is not a command, sends it to module.
 	 * @return User input.
 	 */
-	public String getInput()
+	public String GetInput()
 	{
 		String input = null;
 		try {
@@ -253,9 +253,17 @@ public class MAI
 	 * Returns the currently active module.
 	 * @return The currently active module.
 	 */
-	public Module getActiveModule()
+	public Module GetActiveModule()
 	{
 		return activeModule;
+	}
+	
+	public void Deactivate(Module mod)
+	{
+		if (activeModule == mod) {
+			activeModule = null;
+			mod.onDeactivate();
+		}
 	}
 	
 }

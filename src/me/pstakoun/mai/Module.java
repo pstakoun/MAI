@@ -15,8 +15,6 @@ public interface Module
 	/* Writes to log file. */
 	PrintWriter logger = MAI.logger;
 	
-	Module activeModule = ai.getActiveModule();
-	
 	/**
 	 * Called when module activated.
 	 */

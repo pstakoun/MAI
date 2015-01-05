@@ -38,6 +38,10 @@ public class ChatAI implements Module
 		random = new Random();
 		
 		/* Sets up randomizable outputs. */
+		greetings = new ArrayList<String>();
+		goodbyes = new ArrayList<String>();
+		questions = new ArrayList<String>();
+		statements = new ArrayList<String>();
 		try {
 			getDict();
 		} catch (IOException e) {
@@ -49,7 +53,7 @@ public class ChatAI implements Module
 	public void onActivate()
 	{
 		/* Greets user. */
-		int r = random(0, greetings.size());
+		int r = random(0, greetings.size()-1);
 		String greet = correct(greetings.get(r), '.');
 		say(greet);
 		prevOutput = greet;
@@ -77,12 +81,14 @@ public class ChatAI implements Module
 	private void chat()
 	{
 		/* Handles user input. */
-		while (activeModule == this)
+		while (ai.GetActiveModule() == this)
 		{
 			/* Gets user input. */
-			input = ai.getInput();
+			input = ai.GetInput();
 			/* Responds to user. */
-			respondToInput();
+			if (input != null) {
+				respondToInput();
+			}
 		}
 	}
 	
@@ -107,7 +113,7 @@ public class ChatAI implements Module
 		/* Checks if input is a goodbye. */
 		} else if (isGoodbye(input)) {
 			/* Deactivates module. */
-			onDeactivate();
+			ai.Deactivate(this);
 		/* Default case. */
 		} else {
 			say("Google it!");
@@ -147,16 +153,16 @@ public class ChatAI implements Module
 		
 		/* Goes through complexity levels to find question. */
 		if (complexity == 0) {
-			int r = random(0, questions.size()/4);
+			int r = random(0, questions.size()/4-1);
 			question = questions.get(r);
 		} else if (complexity == 1) {
-			int r = random(questions.size()/4, questions.size()/2);
+			int r = random(questions.size()/4, questions.size()/2-1);
 			question = questions.get(r);
 		} else if (complexity == 2) {
-			int r = random(questions.size()/2, questions.size()/2+questions.size()/4);
+			int r = random(questions.size()/2, questions.size()/2+questions.size()/4-1);
 			question = questions.get(r);
 		} else if (complexity == 3) {
-			int r = random(questions.size()/2+questions.size()/4, questions.size());
+			int r = random(questions.size()/2+questions.size()/4, questions.size()-1);
 			question = questions.get(r);
 		}
 		say(question);
@@ -174,16 +180,16 @@ public class ChatAI implements Module
 		
 		/* Goes through complexity levels to find statement. */
 		if (complexity == 0) {
-			int r = random(0, statements.size()/4);
+			int r = random(0, statements.size()/4-1);
 			statement = statements.get(r);
 		} else if (complexity == 1) {
-			int r = random(statements.size()/4, statements.size()/2);
+			int r = random(statements.size()/4, statements.size()/2-1);
 			statement = statements.get(r);
 		} else if (complexity == 2) {
-			int r = random(statements.size()/2, statements.size()/2+statements.size()/4);
+			int r = random(statements.size()/2, statements.size()/2+statements.size()/4-1);
 			statement = statements.get(r);
 		} else if (complexity == 3) {
-			int r = random(statements.size()/2+statements.size()/4, statements.size());
+			int r = random(statements.size()/2+statements.size()/4, statements.size()-1);
 			statement = statements.get(r);
 		}
 		say(statement);
@@ -220,25 +226,25 @@ public class ChatAI implements Module
 	
 	private void getDict() throws IOException
 	{
-		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/greetings.txt")));
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/greetings.txt")));
 		while (fileReader.ready())
 		{
 			greetings.add(fileReader.readLine());
 		}
 		
-		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/goodbyes.txt")));
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/goodbyes.txt")));
 		while (fileReader.ready())
 		{
 			goodbyes.add(fileReader.readLine());
 		}
 		
-		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/questions.txt")));
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/questions.txt")));
 		while (fileReader.ready())
 		{
 			questions.add(fileReader.readLine());
 		}
 		
-		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/statements.txt")));
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/statements.txt")));
 		while (fileReader.ready())
 		{
 			statements.add(fileReader.readLine());
