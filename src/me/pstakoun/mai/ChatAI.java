@@ -1,5 +1,9 @@
 package me.pstakoun.mai;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -9,6 +13,8 @@ import java.util.Random;
  */
 public class ChatAI implements Module
 {
+	/* Declares file reader. */
+	BufferedReader fileReader;
 	/* Declares randomizer. */
 	Random random;
 	/* Stores input. */
@@ -17,14 +23,10 @@ public class ChatAI implements Module
 	String prevOutput;
 	
 	/* Declare randomizable outputs. */
-	String greeting[];
-	String goodbye[];
-	String question[];
-	String statement[];
-	
-	/* Declare used outputs. */
-	boolean questionAsked[];
-	boolean statementMade[];
+	ArrayList<String> greetings;
+	ArrayList<String> goodbyes;
+	ArrayList<String> questions;
+	ArrayList<String> statements;
 	
 	/**
 	 * Sole constructor for ChatAI.
@@ -35,21 +37,11 @@ public class ChatAI implements Module
 		/* Creates randomizer. */
 		random = new Random();
 		
-		// TODO Make external dict
 		/* Sets up randomizable outputs. */
-		greeting = new String[] {"Hello.","Hi.","Hey."};
-		goodbye = new String[] {"Goodbye.","Bye.","See you later."};
-		question = new String[] {"0","1","2","3","4","5","6","7"};
-		statement = new String[] {"0","1","2","3","4","5","6","7"};
-		
-		/* Sets up used outputs. */
-		questionAsked = new boolean[63];
-		for (int i = 0; i < questionAsked.length; i++) {
-			questionAsked[i] = false;
-		}
-		statementMade = new boolean[63];
-		for (int i = 0; i < statementMade.length; i++) {
-			statementMade[i] = false;
+		try {
+			getDict();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -57,7 +49,8 @@ public class ChatAI implements Module
 	public void onActivate()
 	{
 		/* Greets user. */
-		String greet = greeting[random(0, greeting.length-1)];
+		int r = random(0, greetings.size());
+		String greet = correct(greetings.get(r), '.');
 		say(greet);
 		prevOutput = greet;
 		/* Begins chatting. */
@@ -67,10 +60,13 @@ public class ChatAI implements Module
 	@Override
 	public void onDeactivate()
 	{
+		
 		/* Says goodbye to user. */
-		String bye = goodbye[random(0, greeting.length-1)];
+		int r = random(0, goodbyes.size()-1);
+		String bye = goodbyes.get(r) + ".";
 		say(bye);
 		prevOutput = bye;
+		
 		/* Clears information from current session. */
 		clearInformation();
 	}
@@ -126,13 +122,7 @@ public class ChatAI implements Module
 	private boolean isGreeting(String str)
 	{
 		/* Checks if greeting array contains given string. */
-		for (int i = 0; i < greeting.length; i++)
-		{
-			if (str.equalsIgnoreCase(greeting[i])) {
-				return true;
-			}
-		}
-		return false;
+		return greetings.contains(str.toLowerCase());
 	}
 	
 	/**
@@ -143,13 +133,7 @@ public class ChatAI implements Module
 	private boolean isGoodbye(String str)
 	{
 		/* Checks if goodbye array contains given string. */
-		for (int i = 0; i < goodbye.length; i++)
-		{
-			if (str.equalsIgnoreCase(goodbye[i])) {
-				return true;
-			}
-		}
-		return false;
+		return goodbyes.contains(str.toLowerCase());
 	}
 	
 	/**
@@ -158,66 +142,25 @@ public class ChatAI implements Module
 	 */
 	private void askQuestion(int complexity)
 	{
-		/* Creates variables for use in method. */
-		int comp = complexity;
-		String q = null;
-		int rand;
+		/* Creates variable to store question in. */
+		String question = null;
 		
 		/* Goes through complexity levels to find question. */
-		if (comp == 0) {
-			int i = 0;
-			/* Tries to find an unused question. */
-			while (true) {
-				rand = random(0, 7);
-				i++;
-				/* If found, sets question. */
-				if (!questionAsked[rand]) {
-					q = question[rand];
-					break;
-				}
-				/* After 64 unsuccessful attempts, goes to next complexity level. */
-				if (i == 63) {
-					comp++;
-					break;
-				}
-			}
-		} if (comp == 1) {
-			int i = 0;
-			/* Tries to find an unused question. */
-			while (true) {
-				rand = random(8, 15);
-				i++;
-				/* If found, sets question. */
-				if (!questionAsked[rand]) {
-					q = question[rand];
-					break;
-				}
-				/* After 64 unsuccessful attempts, goes to next complexity level. */
-				if (i == 63) {
-					comp++;
-					break;
-				}
-			} 
-		} if (comp == 2) {
-			int i = 0;
-			/* Tries to find an unused question. */
-			while (true) {
-				rand = random(16, 23);
-				i++;
-				/* If found, sets question. */
-				if (!questionAsked[rand]) {
-					q = question[rand];
-					break;
-				}
-//				/* After 64 unsuccessful attempts, goes to next complexity level. */
-				if (i == 63) {
-//					comp++;
-					break;
-				}
-			}
+		if (complexity == 0) {
+			int r = random(0, questions.size()/4);
+			question = questions.get(r);
+		} else if (complexity == 1) {
+			int r = random(questions.size()/4, questions.size()/2);
+			question = questions.get(r);
+		} else if (complexity == 2) {
+			int r = random(questions.size()/2, questions.size()/2+questions.size()/4);
+			question = questions.get(r);
+		} else if (complexity == 3) {
+			int r = random(questions.size()/2+questions.size()/4, questions.size());
+			question = questions.get(r);
 		}
-		say(q);
-		prevOutput = q;
+		say(question);
+		prevOutput = question;
 	}
 
 	/**
@@ -226,88 +169,25 @@ public class ChatAI implements Module
 	 */
 	private void makeStatement(int complexity)
 	{
-		/* Creates variables for use in method. */
-		int comp = complexity;
-		String s = null;
-		int rand;
+		/* Creates variable to store statement in. */
+		String statement = null;
 		
 		/* Goes through complexity levels to find statement. */
-		if (comp == 0) {
-			int i = 0;
-			/* Tries to find an unused statement. */
-			while (true) {
-				rand = random(0, 7);
-				i++;
-				/* If found, sets statement. */
-				if (!statementMade[rand]) {
-					s = statement[rand];
-					break;
-				}
-				/* After 64 unsuccessful attempts, goes to next complexity level. */
-				if (i == 63) {
-					comp++;
-					break;
-				}
-			}
-		} if (comp == 1) {
-			int i = 0;
-			/* Tries to find an unused statement. */
-			while (true) {
-				rand = random(8, 15);
-				i++;
-				/* If found, sets statement. */
-				if (!statementMade[rand]) {
-					s = statement[rand];
-					break;
-				}
-				/* After 64 unsuccessful attempts, goes to next complexity level. */
-				if (i == 63) {
-					comp++;
-					break;
-				}
-			} 
-		} if (comp == 2) {
-			int i = 0;
-			/* Tries to find an unused statement. */
-			while (true) {
-				rand = random(16, 23);
-				i++;
-				/* If found, sets statement. */
-				if (!statementMade[rand]) {
-					s = statement[rand];
-					break;
-				}
-//				/* After 64 unsuccessful attempts, goes to next complexity level. */
-				if (i == 63) {
-//					comp++;
-					break;
-				}
-			}
+		if (complexity == 0) {
+			int r = random(0, statements.size()/4);
+			statement = statements.get(r);
+		} else if (complexity == 1) {
+			int r = random(statements.size()/4, statements.size()/2);
+			statement = statements.get(r);
+		} else if (complexity == 2) {
+			int r = random(statements.size()/2, statements.size()/2+statements.size()/4);
+			statement = statements.get(r);
+		} else if (complexity == 3) {
+			int r = random(statements.size()/2+statements.size()/4, statements.size());
+			statement = statements.get(r);
 		}
-		say(s);
-		prevOutput = s;
-	}
-
-	/**
-	 * Clears information from current session.
-	 */
-	private void clearInformation()
-	{
-		/* Clears previous inputs and outputs. */
-		input = null;
-		prevOutput = null;
-		
-		/* Clears asked questions. */
-		for (int i = 0; i < questionAsked.length; i++)
-		{
-			questionAsked[i] = false;
-		}
-		
-		/* Clears made statements. */
-		for (int i = 0; i < statementMade.length; i++)
-		{
-			statementMade[i] = false;
-		}
+		say(statement);
+		prevOutput = statement;
 	}
 	
 	/**
@@ -331,6 +211,48 @@ public class ChatAI implements Module
 		/* Gets and returns random integer. */
 		int rand = random.nextInt((max - min) + 1) + min;
 		return rand;
+	}
+	
+	private String correct(String str, char punct)
+	{
+		return Character.toUpperCase(str.charAt(0)) + str.substring(1) + punct;
+	}
+	
+	private void getDict() throws IOException
+	{
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/greetings.txt")));
+		while (fileReader.ready())
+		{
+			greetings.add(fileReader.readLine());
+		}
+		
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/goodbyes.txt")));
+		while (fileReader.ready())
+		{
+			goodbyes.add(fileReader.readLine());
+		}
+		
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/questions.txt")));
+		while (fileReader.ready())
+		{
+			questions.add(fileReader.readLine());
+		}
+		
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("me/pstakoun/mai/dict/statements.txt")));
+		while (fileReader.ready())
+		{
+			statements.add(fileReader.readLine());
+		}
+	}
+	
+	/**
+	 * Clears information from current session.
+	 */
+	private void clearInformation()
+	{
+		/* Clears previous inputs and outputs. */
+		input = null;
+		prevOutput = null;
 	}
 	
 	/**
