@@ -22,11 +22,12 @@ public class ChatAI implements Module
 	/* Stores last output. */
 	String prevOutput;
 	
-	/* Declare randomizable outputs. */
+	/* Declares randomizable outputs. */
 	ArrayList<String> greetings;
 	ArrayList<String> goodbyes;
 	ArrayList<String> questions;
 	ArrayList<String> statements;
+	ArrayList<String> answers;
 	
 	/**
 	 * Sole constructor for ChatAI.
@@ -42,6 +43,7 @@ public class ChatAI implements Module
 		goodbyes = new ArrayList<String>();
 		questions = new ArrayList<String>();
 		statements = new ArrayList<String>();
+		answers = new ArrayList<String>();
 		try {
 			getDict();
 		} catch (IOException e) {
@@ -165,7 +167,7 @@ public class ChatAI implements Module
 			int r = random(questions.size()/2+questions.size()/4, questions.size()-1);
 			question = questions.get(r);
 		}
-		say(question);
+		say(correct(question, '?'));
 		prevOutput = question;
 	}
 
@@ -192,7 +194,7 @@ public class ChatAI implements Module
 			int r = random(statements.size()/2+statements.size()/4, statements.size()-1);
 			statement = statements.get(r);
 		}
-		say(statement);
+		say(correct(statement, '.'));
 		prevOutput = statement;
 	}
 	
@@ -219,35 +221,56 @@ public class ChatAI implements Module
 		return rand;
 	}
 	
+	/**
+	 * Corrects given string's grammar.
+	 * @param str
+	 * @param punct
+	 * @return Corrected string.
+	 */
 	private String correct(String str, char punct)
 	{
 		return Character.toUpperCase(str.charAt(0)) + str.substring(1) + punct;
 	}
 	
+	/**
+	 * Gets copies dict files.
+	 * @throws IOException
+	 */
 	private void getDict() throws IOException
 	{
+		/* Gets and copies greetings. */
 		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/greetings.txt")));
 		while (fileReader.ready())
 		{
 			greetings.add(fileReader.readLine());
 		}
 		
+		/* Gets and copies goodbyes. */
 		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/goodbyes.txt")));
 		while (fileReader.ready())
 		{
 			goodbyes.add(fileReader.readLine());
 		}
 		
+		/* Gets and copies questions. */
 		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/questions.txt")));
 		while (fileReader.ready())
 		{
 			questions.add(fileReader.readLine());
 		}
 		
+		/* Gets and copies statements. */
 		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/statements.txt")));
 		while (fileReader.ready())
 		{
 			statements.add(fileReader.readLine());
+		}
+		
+		/* Gets and copies answers. */
+		fileReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict/answers.txt")));
+		while (fileReader.ready())
+		{
+			answers.add(fileReader.readLine());
 		}
 	}
 	

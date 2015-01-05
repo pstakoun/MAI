@@ -1,15 +1,11 @@
 package me.pstakoun.mai;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -226,7 +222,9 @@ public class MAI
 	 */
 	private void displayCommandHelp()
 	{
-		String help = "";
+		String help = ("Commands:\n"
+				+ "./help - Displays help dialog.\n"
+				+ "./module <module> - Activates given module.");
 		out.println(help);
 	}
 
@@ -251,15 +249,20 @@ public class MAI
 	
 	/**
 	 * Returns the currently active module.
-	 * @return The currently active module.
+	 * @return Currently active module.
 	 */
 	public Module GetActiveModule()
 	{
 		return activeModule;
 	}
 	
+	/**
+	 * Deactivates given module.
+	 * @param mod
+	 */
 	public void Deactivate(Module mod)
 	{
+		/* If given module is active, deactivates it. */
 		if (activeModule == mod) {
 			activeModule = null;
 			mod.onDeactivate();

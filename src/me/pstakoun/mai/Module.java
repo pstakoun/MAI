@@ -26,7 +26,7 @@ public interface Module
 	void onDeactivate();
 	
 	/**
-	 * @return The name of the module.
+	 * @return Name of module.
 	 */
 	String getName();
 	
