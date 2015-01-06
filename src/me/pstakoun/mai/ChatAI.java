@@ -70,7 +70,7 @@ public class ChatAI implements Module
 		/* Says goodbye to user. */
 		int r = random(0, goodbyes.size()-1);
 		String bye = goodbyes.get(r) + ".";
-		say(bye);
+		say(correct(bye, '.'));
 		prevOutput = bye;
 		
 		/* Clears information from current session. */
@@ -111,6 +111,10 @@ public class ChatAI implements Module
 					/* Makes a statement to the user. */
 					makeStatement(0);
 				}
+			} else {
+				String greet = correct(greetings.get(random(0, greetings.size()-1)), '.');
+				say(greet);
+				prevOutput = greet;
 			}
 		/* Checks if input is a goodbye. */
 		} else if (isGoodbye(input)) {
