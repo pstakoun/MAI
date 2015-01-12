@@ -31,7 +31,7 @@ public class MAI
 	/* Writes to console. */
 	private PrintStream out = System.out;
 	/* Declares logger used to log events. */
-	public static PrintWriter logger;
+	private static PrintWriter logger;
 	
 	/**
 	 * Called when application executes.
@@ -244,6 +244,9 @@ public class MAI
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if (input != null) {
+			log(input, "User");
+		}
 		if (!handleInput(input)) {
 			return input;
 		}
@@ -270,6 +273,16 @@ public class MAI
 			activeModule = null;
 			mod.onDeactivate();
 		}
+	}
+	
+	public void log(String msg, String sender)
+	{
+		Calendar cal = Calendar.getInstance();
+    	SimpleDateFormat sdf = new SimpleDateFormat("[HH:mm:ss]");
+    	String timestamp = sdf.format(cal.getTime());
+		
+		logger.println(timestamp + " [" + sender + "]: " + msg);
+		logger.flush();
 	}
 	
 }

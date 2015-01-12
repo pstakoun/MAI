@@ -62,11 +62,10 @@ public class ChatAI implements Module
 		/* Begins chatting. */
 		chat();
 	}
-
+	
 	@Override
 	public void onDeactivate()
 	{
-		
 		/* Says goodbye to user. */
 		int r = random(0, goodbyes.size()-1);
 		String bye = goodbyes.get(r);
@@ -219,6 +218,7 @@ public class ChatAI implements Module
 	{
 		/* Prints given string. */
 		System.out.println(str);
+		ai.log(str, this.getName());
 	}
 	
 	/**
