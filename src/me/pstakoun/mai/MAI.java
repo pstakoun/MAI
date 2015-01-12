@@ -91,6 +91,9 @@ public class MAI
 			if (activeModule == null) {
 				/* Display installed modules. */
 				showModules();
+				while (activeModule == null) {
+					GetInput();
+				}
 			}
 		} else {
 			/* Display installed modules. */

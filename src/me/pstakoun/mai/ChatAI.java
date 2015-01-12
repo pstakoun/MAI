@@ -69,7 +69,7 @@ public class ChatAI implements Module
 		
 		/* Says goodbye to user. */
 		int r = random(0, goodbyes.size()-1);
-		String bye = goodbyes.get(r) + ".";
+		String bye = goodbyes.get(r);
 		say(correct(bye, '.'));
 		prevOutput = bye;
 		
@@ -88,7 +88,7 @@ public class ChatAI implements Module
 			/* Gets user input. */
 			input = ai.GetInput();
 			/* Responds to user. */
-			if (input != null) {
+			if (input != null && input != "") {
 				respondToInput();
 			}
 		}
@@ -103,7 +103,7 @@ public class ChatAI implements Module
 		if (isGreeting(input)) {
 			/* Checks if last output was a greeting. */
 			if (isGreeting(prevOutput)) {
-				int r = random(0,1);
+				int r = random(0, 1);
 				if (r == 0) {
 					/* Asks the user a question. */
 					askQuestion(0);
@@ -134,7 +134,12 @@ public class ChatAI implements Module
 	private boolean isGreeting(String str)
 	{
 		/* Checks if greeting array contains given string. */
-		return greetings.contains(str.toLowerCase());
+		for (String s : greetings) {
+			if (str.toLowerCase().concat(" ").startsWith(s + " ")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -144,8 +149,12 @@ public class ChatAI implements Module
 	 */
 	private boolean isGoodbye(String str)
 	{
-		/* Checks if goodbye array contains given string. */
-		return goodbyes.contains(str.toLowerCase());
+		for (String s : goodbyes) {
+			if (str.toLowerCase().concat(" ").startsWith(s + " ")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -221,8 +230,13 @@ public class ChatAI implements Module
 	private int random(int min, int max)
 	{
 		/* Gets and returns random integer. */
-		int rand = random.nextInt((max - min) + 1) + min;
-		return rand;
+		double rand = (max-min)+min * random.nextDouble();
+		int n = (int) Math.round(rand);
+		if (n < 0) {
+			return 0;
+		} else {
+			return n;
+		}
 	}
 	
 	/**
