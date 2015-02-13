@@ -40,7 +40,7 @@ public class MAI
 	public static void main(String[] args)
 	{
 		/* Creates new instance of MAI. */
-		MAI ai = new MAI(args);
+		new MAI(args);
 	}
 	
 	/**
@@ -80,6 +80,8 @@ public class MAI
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		
+		/* Activates chosen module. */
 		if (args.length > 1) {
 			for (Module mod : modules) {
 				if (args[1].equalsIgnoreCase(mod.getName())) {
@@ -275,6 +277,11 @@ public class MAI
 		}
 	}
 	
+	/**
+	 * Logs given message.
+	 * @param msg
+	 * @param sender
+	 */
 	public void log(String msg, String sender)
 	{
 		Calendar cal = Calendar.getInstance();

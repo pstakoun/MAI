@@ -82,10 +82,10 @@ public class ChatAI implements Module
 	private void chat()
 	{
 		/* Handles user input. */
-		while (ai.GetActiveModule() == this)
+		while (mai.GetActiveModule() == this)
 		{
 			/* Gets user input. */
-			input = ai.GetInput();
+			input = mai.GetInput();
 			/* Responds to user. */
 			if (input != null && input != "") {
 				respondToInput();
@@ -118,7 +118,7 @@ public class ChatAI implements Module
 		/* Checks if input is a goodbye. */
 		} else if (isGoodbye(input)) {
 			/* Deactivates module. */
-			ai.Deactivate(this);
+			mai.Deactivate(this);
 		/* Default case. */
 		} else {
 			say("Google it!");
@@ -134,7 +134,7 @@ public class ChatAI implements Module
 	{
 		/* Checks if greeting array contains given string. */
 		for (String s : greetings) {
-			if (str.toLowerCase().concat(" ").startsWith(s + " ")) {
+			if (str.toLowerCase().startsWith(s)) {
 				return true;
 			}
 		}
@@ -149,7 +149,7 @@ public class ChatAI implements Module
 	private boolean isGoodbye(String str)
 	{
 		for (String s : goodbyes) {
-			if (str.toLowerCase().concat(" ").startsWith(s + " ")) {
+			if (str.toLowerCase().startsWith(s)) {
 				return true;
 			}
 		}
@@ -218,7 +218,7 @@ public class ChatAI implements Module
 	{
 		/* Prints given string. */
 		System.out.println(str);
-		ai.log(str, this.getName());
+		mai.log(str, this.getName());
 	}
 	
 	/**

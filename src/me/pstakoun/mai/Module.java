@@ -8,7 +8,7 @@ package me.pstakoun.mai;
 public interface Module
 {
 	/* Creates now instance of MAI. */
-	MAI ai = new MAI();
+	MAI mai = new MAI();
 	
 	/**
 	 * Called when module activated.
