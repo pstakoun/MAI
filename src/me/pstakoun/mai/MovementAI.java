@@ -6,7 +6,7 @@ package me.pstakoun.mai;
  * in anything from computer games to robots.
  * @author Peter Stakoun
  */
-public class MovementAI implements Module
+public class MovementAI extends Module
 {
 	@Override
 	public void onActivate()

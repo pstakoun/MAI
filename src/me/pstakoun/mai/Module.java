@@ -5,24 +5,23 @@ package me.pstakoun.mai;
  * This provides them with methods to communicate with MAI, the user, and other modules.
  * @author Peter Stakoun
  */
-public interface Module
+public abstract class Module
 {
-	/* Creates now instance of MAI. */
 	MAI mai = new MAI();
 	
 	/**
 	 * Called when module activated.
 	 */
-	void onActivate();
+	abstract void onActivate();
 	
 	/**
 	 * Called when module deactivated.
 	 */
-	void onDeactivate();
+	abstract void onDeactivate();
 	
 	/**
 	 * @return Name of module.
 	 */
-	String getName();
+	abstract String getName();
 	
 }

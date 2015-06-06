@@ -11,7 +11,7 @@ import java.util.Random;
  * for many different high level chat programs.
  * @author Peter Stakoun
  */
-public class ChatAI implements Module
+public class ChatAI extends Module
 {
 	/* Declares file reader. */
 	BufferedReader fileReader;
