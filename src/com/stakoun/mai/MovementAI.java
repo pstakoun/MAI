@@ -1,4 +1,4 @@
-package me.pstakoun.mai;
+package com.stakoun.mai;
 
 /**
  * The MovementAI module is a basic movement controller

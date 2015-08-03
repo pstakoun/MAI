@@ -1,4 +1,4 @@
-package me.pstakoun.mai;
+package com.stakoun.mai;
 
 /**
  * All modules must implement this interface in order to be recognized.

@@ -1,4 +1,4 @@
-package me.pstakoun.mai;
+package com.stakoun.mai;
 
 import java.io.BufferedReader;
 import java.io.IOException;

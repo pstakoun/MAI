@@ -1,0 +1,37 @@
+[14:32:27] [User]: ./module
+[14:32:34] [User]: ./module chatai
+[14:32:34] [ChatAI]: Hey there.
+[14:32:38] [User]: hey
+[14:32:38] [ChatAI]: I'm bored.
+[14:32:41] [User]: cool
+[14:32:41] [ChatAI]: Google it!
+[14:32:42] [User]: ok
+[14:32:42] [ChatAI]: Google it!
+[14:32:46] [User]: hi
+[14:32:46] [ChatAI]: Hey there.
+[14:32:48] [User]: hi
+[14:32:48] [ChatAI]: I'm bored.
+[14:32:50] [User]: hi
+[14:32:50] [ChatAI]: Hey there.
+[14:32:51] [User]: hi
+[14:32:51] [ChatAI]: I'm bored.
+[14:32:52] [User]: hi
+[14:32:52] [ChatAI]: Hey there.
+[14:32:52] [User]: hi
+[14:32:52] [ChatAI]: I'm bored.
+[14:32:53] [User]: hi
+[14:32:53] [ChatAI]: Hey there.
+[14:32:54] [User]: hi
+[14:32:54] [ChatAI]: I'm bored.
+[14:32:56] [User]: hey
+[14:32:56] [ChatAI]: Hey there.
+[14:33:00] [User]: hellol
+[14:33:00] [ChatAI]: I'm bored.
+[14:33:04] [User]: hellooo
+[14:33:04] [ChatAI]: Hey there.
+[14:33:08] [User]: helliky
+[14:33:08] [ChatAI]: Google it!
+[14:33:11] [User]: hiiii
+[14:33:11] [ChatAI]: I'm bored.
+[14:33:16] [User]: high
+[14:33:16] [ChatAI]: Hey there.
